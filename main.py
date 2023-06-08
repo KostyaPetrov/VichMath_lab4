@@ -63,7 +63,7 @@ def drow_data(data, func, names):
     colors=["red","blue","brown", "yellow", "green","orange"]
     for i in range(0, len(data), 2):
         list_x.append(data[i])
-        list_y.append(data[i+1]+1)
+        list_y.append(data[i+1])
 
     plt.scatter(list_x, list_y, label='Исходные данные')
     plt.xlabel('X')
@@ -458,10 +458,17 @@ def power_approximation(list_points, num_print, path):
         list_x.append(list_points[i])
         list_y.append(list_points[i + 1])
 
-        sum_lnx_lny += math.log(list_points[i]) * math.log(list_points[i + 1])
-        sum_lnx += math.log(list_points[i])
-        sum_lny += math.log(list_points[i + 1])
-        sum_ln2x += math.log(list_points[i]) ** 2
+        if(list_points[i]>0 and list_points[i+1]>0):
+            sum_lnx_lny += math.log(list_points[i]) * math.log(list_points[i + 1])
+            sum_lnx += math.log(list_points[i])
+            sum_lny += math.log(list_points[i + 1])
+            sum_ln2x += math.log(list_points[i]) ** 2
+        else:
+            list_error=[]
+            print("Значение меньше нуля")
+            return "", 0,list_error
+
+
 
     b = (n * sum_lnx_lny - sum_lnx * sum_lny) / (n * sum_ln2x - (sum_lnx) ** 2)
 
@@ -563,8 +570,14 @@ def exponential_approximation(list_points, num_print, path):
         list_y.append(list_points[i + 1])
 
         sum_x2 += list_points[i] ** 2
-        sum_lny += math.log(list_points[i + 1])
-        sum_xlny += list_points[i] * math.log(list_points[i + 1])
+        if(list_points[i+1]>0):
+            sum_lny += math.log(list_points[i + 1])
+            sum_xlny += list_points[i] * math.log(list_points[i + 1])
+
+        else:
+            list_error=[]
+            print("Значение меньше нуля")
+            return "", 0, list_error
 
     b = (n * sum_xlny - sum(list_x) * sum_lny) / (n * sum_x2 - sum(list_x) ** 2)
 
@@ -664,10 +677,16 @@ def logarithmic_approximation(list_points, num_print, path):
         list_x.append(list_points[i])
         list_y.append(list_points[i + 1])
 
-        sum_lnx += math.log(list_points[i])
-        sum_ln2x += math.log(list_points[i]) ** 2
+        if(list_points[i]>0):
+            sum_lnx += math.log(list_points[i])
+            sum_ln2x += math.log(list_points[i]) ** 2
 
-        sum_ylnx += list_points[i + 1] * math.log(list_points[i])
+            sum_ylnx += list_points[i + 1] * math.log(list_points[i])
+        else:
+            list_error=[]
+            print("Значение меньше нуля")
+            return "", 0,list_error
+
 
     b = (n * sum_ylnx - sum(list_y) * sum_lnx) / (n * sum_ln2x - sum_lnx ** 2)
 
@@ -810,7 +829,7 @@ def readData(num):
             file_line = file.readline()
             file_line = file_line.replace(",", ".")
             num_point = float(file_line)
-            for i in range(0, num_point):
+            for i in range(0, int(num_point)):
                 j = 0
                 while j == 0:
                     file_line = file.readline()
@@ -898,4 +917,4 @@ main()
 #
 #
 #
-#
+#C:\\Users\\Kostya\\Desktop\\ITMO\\ITMO_4sem\\VichMath\\file2.txt
